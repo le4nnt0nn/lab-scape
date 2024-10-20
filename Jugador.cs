@@ -8,14 +8,19 @@ namespace lab_scape
 {
     class Jugador
     {
+        public string Usuario { get; private set; }
+
+        public int Puntuacion { get; private set; }
         public int Fila { get; private set; }
         public int Columna { get; private set; }
 
         // Constructor que coloca al jugador en la posición inicial (0,0)
-        public Jugador()
+        public Jugador(string usuario)
         {
-            Fila = 0;
-            Columna = 0;
+            this.Usuario = usuario;
+            this.Puntuacion = 0;
+            this.Fila = 0;
+            this.Columna = 0;
         }
 
         // Método para mover al jugador
@@ -38,6 +43,12 @@ namespace lab_scape
             {
                 Fila = nuevaFila;
                 Columna = nuevaColumna;
+
+                // Verificar si jugador recoge punto
+                if(laberinto.EsPunto(Fila, Columna)) {
+                    Puntuacion++;
+                    laberinto.RecogerPunto(Fila, Columna);
+                }
             }
             else
             {

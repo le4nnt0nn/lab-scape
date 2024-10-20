@@ -20,6 +20,7 @@ namespace lab_scape
             this.columnas = columnas;
             mapa = new int[filas, columnas];
             GenerarLaberinto();
+            ColocarPuntosAleatorios();
         }
 
         // Método para generar un laberinto aleatorio
@@ -47,8 +48,25 @@ namespace lab_scape
             mapa[filas - 1, columnas - 1] = 0;
         }
 
+        // Método para colocar arrobas (@) aleatorias en el mapa
+        private void ColocarPuntosAleatorios()
+        {
+            int cantidadPuntos = (filas * columnas) / 10;
+            for (int i = 0; i < cantidadPuntos; i++)
+            {
+                int fila, columna;
+                do
+                {
+                    fila = random.Next(0, filas);
+                    columna = random.Next(0, columnas);
+                } while (mapa[fila, columna] != 0 || (fila == 0 && columna == 0)); // Evitar poner arrobas en paredes o en la posición inicial
+
+                mapa[fila, columna] = 2; // 2 representará una arroba (@)
+            }
+        }
+
         // Método para mostrar el laberinto
-        public void MostrarLaberinto(int jugadorFila, int jugadorColumna, int salidaFila, int salidaColumna)
+        public void MostrarLaberinto(int jugadorFila, int jugadorColumna, int salidaFila, int salidaColumna, int puntuacion)
         {
             for (int i = 0; i < filas; i++)
             {
@@ -60,11 +78,14 @@ namespace lab_scape
                         Console.Write("S "); // S representa la salida
                     else if (mapa[i, j] == 1)
                         Console.Write("# "); // # representa una pared
+                    else if (mapa[i, j] == 2)
+                        Console.Write("@ "); // @ representa un punto
                     else
                         Console.Write(". "); // . representa un espacio vacío
                 }
                 Console.WriteLine();
             }
+            Console.WriteLine("\nPuntuación: " + puntuacion);
         }
 
         // Método para verificar si un movimiento es válido
@@ -87,6 +108,21 @@ namespace lab_scape
         public int GetColumnas()
         {
             return columnas;
+        }
+
+        // Verificar si el jugador está sobre una arroba (@)
+        public bool EsPunto(int fila, int columna)
+        {
+            return mapa[fila, columna] == 2;
+        }
+
+        // Convertir una arroba (@) en un espacio vacío (.)
+        public void RecogerPunto(int fila, int columna)
+        {
+            if (mapa[fila, columna] == 2)
+            {
+                mapa[fila, columna] = 0;
+            }
         }
     }
 }

@@ -14,10 +14,10 @@ namespace lab_scape
         private int salidaColumna;
 
         // Constructor del juego
-        public Juego(int filas, int columnas)
+        public Juego(string usuario, int filas, int columnas)
         {
             laberinto = new Laberinto(filas, columnas);
-            jugador = new Jugador();
+            jugador = new Jugador(usuario);
             salidaFila = filas - 1; // La salida estará en la última fila
             salidaColumna = columnas - 1; // y en la última columna
         }
@@ -28,12 +28,13 @@ namespace lab_scape
             while (true)
             {
                 Console.Clear();
-                laberinto.MostrarLaberinto(jugador.Fila, jugador.Columna, salidaFila, salidaColumna);
+                laberinto.MostrarLaberinto(jugador.Fila, jugador.Columna, salidaFila, salidaColumna, jugador.Puntuacion);
 
                 // Verificar si el jugador ha llegado a la salida
                 if (jugador.Fila == salidaFila && jugador.Columna == salidaColumna)
                 {
-                    Console.WriteLine("¡Felicidades! Has escapado del laberinto.");
+                    Console.WriteLine("¡Felicidades, " + jugador.Usuario + "! Has escapado del laberinto.");
+                    Console.WriteLine("Puntuación final: " + jugador.Puntuacion);
                     break;
                 }
 
